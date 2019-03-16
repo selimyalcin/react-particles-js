@@ -20,7 +20,7 @@ export interface ParticlesState {
 export default class Particles extends Component<
 	ParticlesProps,
 	ParticlesState
-> {
+	> {
 	public static defaultProps: ParticlesProps = {
 		width: "100%",
 		height: "100%",
@@ -38,7 +38,7 @@ export default class Particles extends Component<
 	}
 
 	private buildParticlesLibrary(params: RecursivePartial<IParams>) {
-		try{if (window === undefined) return null; } catch{ return null; } // SSR
+		try { if (window === undefined) return null; } catch{ return null; } // SSR
 		return new ParticlesLibrary(params);
 	}
 
@@ -57,7 +57,11 @@ export default class Particles extends Component<
 	}
 
 	destroy() {
-		this.state.library.destroy();
+		// Error on React 16.x.x
+		try {
+			this.state.library.destroy()
+		} catch (e) { }
+		
 	}
 
 	loadCanvas(canvas: HTMLCanvasElement) {
